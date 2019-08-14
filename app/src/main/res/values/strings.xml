@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Рыба моя</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="signin">Авторизация</string>
+    <string name="registration">Регистрация</string>
+    <string name="txt_no_accaunt">Еще нет аккаунта?</string>
+    <string name="app_desc">Золотые рыбки и другая красота</string>
+    <string name="msg_error_edittext">Все поля обязательны для заполнения</string>
+    <string name="msg_registration">Вы успешно зарегистрированы</string>
+    <string name="msg_signin">Вы успешно авторизованы</string>
+    <string name="msg_error_signin">Учетная запись не найдена. Попробуйте ввести данные заново</string>
+</resources>
