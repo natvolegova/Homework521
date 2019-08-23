@@ -4,8 +4,9 @@ import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -18,45 +19,49 @@ public class FileHelper {
         this.context = context;
     }
 
-    //создаем системный файл для хранения данных
-    public void createFile(String fileName) {
-        try {
-            File file = new File(context.getFilesDir(), fileName);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     //обновляем данные
     public void updateValue(String fileName, String value) {
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fileOutputStream = context.openFileOutput(fileName, MODE_PRIVATE);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            BufferedWriter bw = new BufferedWriter(outputStreamWriter);
+            fos = context.openFileOutput(fileName, MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
             bw.write(value);
             bw.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ignored) {
+                    ignored.printStackTrace();
+                }
+            }
         }
     }
 
     //получаем данные из файла
     public String getValue(String fileName) {
+        FileInputStream fis = null;
         String value = "";
         try {
-            InputStreamReader inputStreamReader = new InputStreamReader(context.openFileInput(fileName));
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            fis = context.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
             value = reader.readLine();
 
-        } catch (NullPointerException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException ignored) {
+                    ignored.printStackTrace();
+                }
+            }
         }
         return value;
     }
